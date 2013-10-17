@@ -127,6 +127,10 @@ bindsym XF86AudioRaiseVolume exec ponymix increase 5
 bindsym XF86AudioLowerVolume exec ponymix decrease 5
 bindsym XF86AudioMute exec ponymix toggle
 
+# Network Manager
+exec /usr/bin/nm-applet
+
+##############
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
