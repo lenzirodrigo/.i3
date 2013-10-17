@@ -7,13 +7,16 @@
 # showing cpu_usage has to be enabled (because ram_usage is prepended to that with sed...)
 # output_format has to be set to "i3bar"
 
+WIRELESS=wlp2s0
+ETH=enp3s0
+
 i3status -c $1  | while :
 do
     read line
 
-    if [ -e /sys/class/net/eth0/operstate ] && [ `cat /sys/class/net/eth0/operstate` == "up" ]; then
-        ETHR2=`cat /sys/class/net/eth0/statistics/rx_bytes`
-        ETHT2=`cat /sys/class/net/eth0/statistics/tx_bytes`
+    if [ -e /sys/class/net/$ETH/operstate ] && [ `cat /sys/class/net/$ETH/operstate` == "up" ]; then
+        ETHR2=`cat /sys/class/net/$ETH/statistics/rx_bytes`
+        ETHT2=`cat /sys/class/net/$ETH/statistics/tx_bytes`
         ETHTBPS=`expr $ETHT2 - $ETHT1`
         ETHRBPS=`expr $ETHR2 - $ETHR1`
         ETHTKBPS=`expr $ETHTBPS / 1024`
@@ -21,13 +24,13 @@ do
 
         ETHR1=$ETHR2
         ETHT1=$ETHT2
-        sedeth="s/\(\"name\":\"ethernet\",\"instance\":\"eth0\".*)\)\(\"}\)/\1 D $ETHRKBPS U $ETHTKBPS\2/"
+        sedeth="s/\(\"name\":\"ethernet\",\"instance\":\"$ETH\".*)\)\(\"}\)/\1 D $ETHRKBPS U $ETHTKBPS\2/"
         line=`echo $line | sed -e "$sedeth"`
     fi
 
-    if [ -e /sys/class/net/wlan0/operstate ] && [ `cat /sys/class/net/wlan0/operstate` == "up" ]; then
-        WLANR2=`cat /sys/class/net/wlp2s0/statistics/rx_bytes`
-        WLANT2=`cat /sys/class/net/wlp2s0/statistics/tx_bytes`
+    if [ -e /sys/class/net/$WIRELESS/operstate ] && [ `cat /sys/class/net/$WIRELESS/operstate` == "up" ]; then
+        WLANR2=`cat /sys/class/net/$WIRELESS/statistics/rx_bytes`
+        WLANT2=`cat /sys/class/net/$WIRELESS/statistics/tx_bytes`
         WLANTBPS=`expr $WLANT2 - $WLANT1`
         WLANRBPS=`expr $WLANR2 - $WLANR1`
         WLANTKBPS=`expr $WLANTBPS / 1024`
@@ -35,7 +38,7 @@ do
 
         WLANR1=$WLANR2
         WLANT1=$WLANT2
-        sedwlan="s/\(\"name\":\"wireless\",\"instance\":\"wlp2s0\".*)\)\(\"}\)/\1 D $WLANRKBPS U $WLANTKBPS\2/"
+        sedwlan="s/\(\"name\":\"wireless\",\"instance\":\"$WIRELESS\".*)\)\(\"}\)/\1 D $WLANRKBPS U $WLANTKBPS\2/"
         line=`echo $line | sed -e "$sedwlan"`
     fi
 
