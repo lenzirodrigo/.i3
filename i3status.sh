@@ -42,15 +42,21 @@ do
         line=`echo $line | sed -e "$sedwlan"`
     fi
 
-    # get free and used RAM (this excludes cache)
-    ram_both=`free -k | sed -n -e '3 p' | sed 's/-\/+ buffers\/cache:\s*//'`
-    used=`echo $ram_both | sed "s/\([0-9]*\)\s*\([0-9]*\)/\1/"`
-    free=`echo $ram_both | sed "s/\([0-9]*\)\s*\([0-9]*\)/\2/"`
-    used=`echo "scale=1; $used / 1024 / 1024" | bc`
-    free=`echo "scale=1; $free / 1024 / 1024" | bc`
+    # get free RAM and Swap (this excludes cache)
+    #RAM
+    ram=`free -kh | grep - | awk '{print $4}'  | cut -d "G" -f1`
+    swap=`free -kh | grep Swap | awk '{print $4}' | cut -d "G" -f1`
 
-    # if free RAM is less than 2GB show text in red, else green
-    if [ $(echo "$free < 2" | bc) -eq 1 ]
+    # if free RAM is less than 1GB show text in red, else green
+    if [ $(echo "$ram < 1" | bc) -eq 1 ]
+    then
+        color=FF0000
+    else
+        color=00FF00
+    fi
+
+    # if free SAWP is less than 2GB show text in red, else green
+    if [ $(echo "$swap < 2" | bc) -eq 1 ]
     then
         color=FF0000
     else
@@ -58,8 +64,13 @@ do
     fi
 
     # put ram_usage before cpu_usage
-    sedline="s/cpu_usage/ram_usage\",\"color\":\"#${color}\",\"full_text\":\"RAM: ${free}G\"},{\"name\":\"cpu_usage/"
+    sedline="s/cpu_usage/ram_usage\",\"color\":\"#${color}\",\"full_text\":\"RAM: ${ram}G\"},{\"name\":\"cpu_usage/"
     line=`echo $line | sed -e "$sedline" | sed -e "s/% \"/%\"/"`
+
+    # put swap_usage between ram_usage and cpu_usage
+    sedline="s/cpu_usage/swap_usage\",\"color\":\"#${color}\",\"full_text\":\"SWAP: ${swap}G\"},{\"name\":\"cpu_usage/"
+    line=`echo $line | sed -e "$sedline" | sed -e "s/% \"/%\"/"`
+
 
     #remove colons
     colonline='s/\([a-zA-Z]\):/\1/g'
