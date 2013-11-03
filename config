@@ -127,6 +127,9 @@ bindsym XF86AudioRaiseVolume exec ponymix increase 5
 bindsym XF86AudioLowerVolume exec ponymix decrease 5
 bindsym XF86AudioMute exec ponymix toggle
 
+# Apps
+bindsym $mod+g exec google-chrome
+
 # Network Manager
 exec /usr/bin/nm-applet
 
