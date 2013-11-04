@@ -133,6 +133,9 @@ bindsym $mod+g exec google-chrome
 # Network Manager
 exec /usr/bin/nm-applet
 
+# Wallpaper
+exec --no-startup-id sh ~/.fehbg
+
 ##############
 
 # reload the configuration file
