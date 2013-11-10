@@ -131,6 +131,7 @@ bindsym XF86AudioMute exec ponymix toggle
 bindsym $mod+g exec google-chrome
 
 # Network Manager
+#exec /usr/libexec/gnome-settings-daemon
 exec /usr/bin/nm-applet
 
 # Wallpaper
@@ -175,7 +176,13 @@ bindsym $mod+r mode "resize"
 # finds out, if available)
 bar {
         position top
+        tray_output primary
         status_command ~/.i3/i3status.sh ~/.i3/i3status.conf
-        
+
+        colors {
+                background #000000
+                statusline #ffffff
+        }
 }
+
 
