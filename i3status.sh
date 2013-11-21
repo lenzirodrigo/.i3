@@ -45,18 +45,10 @@ do
     # get free RAM and Swap (this excludes cache)
     #RAM
     ram=`free -kh | grep - | awk '{print $4}'  | cut -d "G" -f1`
-    swap=`free -kh | grep Swap | awk '{print $4}' | cut -d "G" -f1`
+    swap=`free -kh | grep Swap | awk '{print $3}' | cut -d "G" -f1`
 
     # if free RAM is less than 1GB show text in red, else green
     if [ $(echo "$ram < 1" | bc) -eq 1 ]
-    then
-        color=FF0000
-    else
-        color=00FF00
-    fi
-
-    # if free SAWP is less than 2GB show text in red, else green
-    if [ $(echo "$swap < 2" | bc) -eq 1 ]
     then
         color=FF0000
     else
@@ -68,7 +60,7 @@ do
     line=`echo $line | sed -e "$sedline" | sed -e "s/% \"/%\"/"`
 
     # put swap_usage between ram_usage and cpu_usage
-    sedline="s/cpu_usage/swap_usage\",\"color\":\"#${color}\",\"full_text\":\"SWAP: ${swap}G\"},{\"name\":\"cpu_usage/"
+    sedline="s/cpu_usage/swap_usage\",\"color\":\"#8F00FF\",\"full_text\":\"SWAP: ${swap}G\"},{\"name\":\"cpu_usage/"
     line=`echo $line | sed -e "$sedline" | sed -e "s/% \"/%\"/"`
 
 
