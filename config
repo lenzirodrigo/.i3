@@ -135,15 +135,17 @@ bindsym XF86AudioRaiseVolume exec ponymix increase 5
 bindsym XF86AudioLowerVolume exec ponymix decrease 5
 bindsym XF86AudioMute exec ponymix toggle
 
+bindsym $mod+Shift+p exec i3lock -i /home/rodrigo/Pictures/i3lock-image.png -c 262626
 # Apps
-bindsym $mod+g exec google-chrome
+bindsym $mod+g exec google-chrome-stable
 
 # Network Manager
 #exec /usr/libexec/gnome-settings-daemon
-exec /usr/bin/nm-applet
+exec --no-startup-id nm-applet
 
 # Wallpaper
 exec --no-startup-id sh ~/.fehbg
+
 
 ##############
 
