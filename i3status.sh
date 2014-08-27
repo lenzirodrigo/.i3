@@ -66,8 +66,8 @@ do
 
 
     # Put uptime
-    uptime=`uptime | awk '{print $3}'`
-    sedline="s/battery/uptime\",\"full_text\":\"UPTIME: ${uptime} days\"},{\"name\":\"battery/"
+    uptime=`uptime | awk '{print $3 " " $4}' | sed 's/,//'`
+    sedline="s/battery/uptime\",\"full_text\":\"UPTIME: ${uptime}\"},{\"name\":\"battery/"
     line=`echo $line | sed -e "$sedline" | sed -e "s/% \"/%\"/"`
 
 
