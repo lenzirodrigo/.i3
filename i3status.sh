@@ -63,8 +63,10 @@ do
     sedline="s/cpu_usage/swap_usage\",\"color\":\"#8F00FF\",\"full_text\":\"SWAP: ${swap}\"},{\"name\":\"cpu_usage/"
     line=`echo $line | sed -e "$sedline" | sed -e "s/% \"/%\"/"`
 
-
-
+    sensor=`sensors | grep "Physical" | awk '{print $4}'`
+    sedline="s/battery/sensor\",\"full_text\":\"TEMP: ${sensor}\"},{\"name\":\"sensor/"
+    line=`echo $line | sed -e "$sedline" | sed -e "s/% \"/%\"/"`
+    
     # Put uptime
     uptime=`uptime | awk '{print $3 " " $4}' | sed 's/,//'`
     sedline="s/battery/uptime\",\"full_text\":\"UPTIME: ${uptime}\"},{\"name\":\"battery/"
