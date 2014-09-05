@@ -64,7 +64,7 @@ do
     line=`echo $line | sed -e "$sedline" | sed -e "s/% \"/%\"/"`
 
     sensor=`sensors | grep "Physical" | awk '{print $4}'`
-    sedline="s/battery/sensor\",\"full_text\":\"TEMP: ${sensor}\"},{\"name\":\"sensor/"
+    sedline="s/battery/sensor\",\"full_text\":\"TEMP: ${sensor}\"},{\"name\":\"battery/"
     line=`echo $line | sed -e "$sedline" | sed -e "s/% \"/%\"/"`
     
     # Put uptime
