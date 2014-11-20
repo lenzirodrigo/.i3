@@ -44,7 +44,7 @@ do
 
     # get free RAM and Swap (this excludes cache)
     #RAM
-    ram=`free -kh | grep - | awk '{print $3}'`
+    ram=`free -kh | grep Mem | awk '{print $3}'`
     swap=`free -kh | grep Swap | awk '{print $3}'`
 
     # if free RAM is less than 1GB show text in red, else green
